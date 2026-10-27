@@ -17,12 +17,13 @@ from sklearn.preprocessing import normalize
 from sklearn.svm import LinearSVC
 from sklearn.utils.validation import check_is_fitted
 
-BASE_DIR = Path(__file__).resolve().parent
+from .paths import BASE_DIR, DATA_DIR, SENTENCE_BERT_DIR, VARIANTS_PATH
+
 RANDOM_STATE = 42
 
 
 def charger_variantes():
-    with (BASE_DIR / "variantes.json").open(encoding="utf-8") as fichier:
+    with VARIANTS_PATH.open(encoding="utf-8") as fichier:
         return json.load(fichier)
 
 
@@ -101,7 +102,7 @@ class RepresentationPhrases(TransformerMixin, BaseEstimator):
                         "L’option Sentence-BERT nécessite requirements-sentencebert.txt "
                         "et un premier téléchargement du modèle."
                     ) from erreur
-                dossier = BASE_DIR / "artifacts" / "sentence_bert"
+                dossier = SENTENCE_BERT_DIR
                 source = str(dossier) if (dossier / "modules.json").is_file() else (
                     "sentence-transformers/all-MiniLM-L6-v2"
                 )
@@ -117,9 +118,9 @@ class RepresentationPhrases(TransformerMixin, BaseEstimator):
             return normalize(self.svd_.transform(lexical)).astype(np.float32)
         if not hasattr(self, "encodeur_"):
             from sentence_transformers import SentenceTransformer
-            dossier = BASE_DIR / "artifacts" / "sentence_bert"
+            dossier = SENTENCE_BERT_DIR
             if not (dossier / "modules.json").is_file():
-                raise FileNotFoundError("Encodeur Sentence-BERT absent du dossier artifacts/sentence_bert.")
+                raise FileNotFoundError("Encodeur Sentence-BERT absent du dossier artifacts/models/sentence_bert.")
             self.encodeur_ = SentenceTransformer(str(dossier), device="cpu", local_files_only=True)
         return self.encodeur_.encode(
             list(X), batch_size=32, normalize_embeddings=True,
@@ -170,7 +171,7 @@ def mesures(y_vrai, y_predit):
     }
 
 
-def preparer_donnees(dossier=BASE_DIR):
+def preparer_donnees(dossier=DATA_DIR):
     """Conservation du test fourni ; dédoublonnage effectué sur l'entraînement."""
     train = pd.read_csv(Path(dossier) / "banking77_train.csv")
     test = pd.read_csv(Path(dossier) / "banking77_test.csv")

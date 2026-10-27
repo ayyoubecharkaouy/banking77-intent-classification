@@ -1,16 +1,16 @@
 from pathlib import Path
 import json
+import sys
+
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+if str(PROJECT_DIR) not in sys.path:
+    sys.path.insert(0, str(PROJECT_DIR))
 
 import streamlit as st
 import joblib
 
 from banking77 import predire_intention
-
-
-BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "artifacts" / "modele_intention_banking77.joblib"
-
-RESPONSES_PATH = BASE_DIR / "reponses.json"
+from banking77.paths import MODEL_PATH, RESPONSES_PATH
 
 EXEMPLES = [
     "I have not received my new card yet",

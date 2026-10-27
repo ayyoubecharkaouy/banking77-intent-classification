@@ -11,7 +11,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--embeddings", choices=("lsa", "sentencebert"), default="lsa")
     args = parser.parse_args()
-    dossier = Path(__file__).resolve().parent
+    dossier = Path(__file__).resolve().parents[1]
+    if str(dossier) not in sys.path:
+        sys.path.insert(0, str(dossier))
     os.chdir(dossier)
     os.environ["BANKING77_EMBEDDINGS"] = args.embeddings
     os.environ.setdefault("MPLCONFIGDIR", str(dossier / ".cache" / "matplotlib"))
@@ -22,7 +24,7 @@ def main():
     from IPython.terminal.interactiveshell import TerminalInteractiveShell
     from IPython.utils.capture import capture_output
 
-    chemin = dossier / "Projet_Classification_Intentions_Banking77.ipynb"
+    chemin = dossier / "notebooks" / "Projet_Classification_Intentions_Banking77.ipynb"
     notebook = json.loads(chemin.read_text(encoding="utf-8"))
     shell = TerminalInteractiveShell.instance()
     shell.enable_matplotlib("inline")

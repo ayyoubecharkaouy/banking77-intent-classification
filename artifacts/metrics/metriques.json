@@ -1,5 +1,5 @@
 {
-  "date_utc": "2026-10-27T22:54:08.809424+00:00",
+  "date_utc": "2026-10-27T23:21:51.211664+00:00",
   "random_state": 42,
   "donnees": {
     "train_initial": 10003,
@@ -110,10 +110,10 @@
   ],
   "sentencebert_execute": false,
   "sha256": {
-    "banking77_train.csv": "127405dcf993ab665b239a69c285891286b6c5313897ceb8c27b5f49efb265d2",
-    "banking77_test.csv": "47102a476fb53636f11e2789142f039b6dfab4fa30dd8983452c09ead7f4535a",
-    "variantes.json": "48f65a007d5fe962d61f8aeeebdd9b6af3b4c1b56f32f5432265dfb73122a664",
-    "reponses.json": "32051474c2a8ee39ca7408b0603b77cf1ce0fd33056f0f9fce77a3c5deb848e5"
+    "data/raw/banking77_train.csv": "127405dcf993ab665b239a69c285891286b6c5313897ceb8c27b5f49efb265d2",
+    "data/raw/banking77_test.csv": "47102a476fb53636f11e2789142f039b6dfab4fa30dd8983452c09ead7f4535a",
+    "banking77/resources/variantes.json": "48f65a007d5fe962d61f8aeeebdd9b6af3b4c1b56f32f5432265dfb73122a664",
+    "banking77/resources/reponses.json": "32051474c2a8ee39ca7408b0603b77cf1ce0fd33056f0f9fce77a3c5deb848e5"
   },
   "variance_expliquee_lsa": 0.5239152908325195
 }

@@ -1,4 +1,5 @@
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +13,7 @@ from banking77 import (
     BASE_DIR, NormaliseurTexte, charger_variantes, construire_modele,
     nettoyer_texte, predire_intention, preparer_donnees,
 )
+from banking77.paths import EMBEDDINGS_DIR, METRICS_DIR, MODEL_PATH, NOTEBOOK_PATH, RESPONSES_PATH
 
 
 class PretraitementTests(unittest.TestCase):
@@ -77,27 +79,39 @@ class PipelineTests(unittest.TestCase):
 class LivraisonTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.modele = joblib.load(BASE_DIR / 'artifacts/modele_intention_banking77.joblib')
-        cls.reponses = json.loads((BASE_DIR / 'reponses.json').read_text(encoding='utf-8'))
+        cls.modele = joblib.load(MODEL_PATH)
+        cls.reponses = json.loads(RESPONSES_PATH.read_text(encoding='utf-8'))
 
     def test_couverture_des_77_intentions_et_scores_exportes(self):
         self.assertEqual(set(self.modele.classes_), set(self.reponses))
         self.assertEqual(len(self.reponses), 77)
         self.assertTrue(all(texte.strip() for texte in self.reponses.values()))
-        metriques = json.loads((BASE_DIR / 'artifacts/metriques.json').read_text())
+        metriques = json.loads((METRICS_DIR / 'metriques.json').read_text())
         self.assertEqual(metriques['nombre_reponses'], 77)
         self.assertGreater(metriques['scores_test']['f1_macro'], 0.80)
         self.assertNotEqual(metriques['selection']['mode'], 'tfidf')
 
     def test_matrices_embeddings_exportees(self):
-        with np.load(BASE_DIR / 'artifacts/embeddings_phrases.npz', allow_pickle=False) as archive:
+        with np.load(EMBEDDINGS_DIR / 'embeddings_phrases.npz', allow_pickle=False) as archive:
             self.assertEqual(archive['train'].shape[0], len(archive['y_train']))
             self.assertEqual(archive['test'].shape[0], len(archive['y_test']))
             self.assertEqual(archive['train'].shape[1], archive['test'].shape[1])
             self.assertTrue(np.isfinite(archive['test']).all())
 
+    def test_donnees_et_modele_depuis_un_autre_dossier(self):
+        dossier_initial = Path.cwd()
+        try:
+            with tempfile.TemporaryDirectory() as temporaire:
+                os.chdir(temporaire)
+                train, test, bilan = preparer_donnees()
+                self.assertEqual(len(train), bilan['train_final'])
+                self.assertEqual(len(test), bilan['test_final'])
+                self.assertIn(predire_intention('My card has not arrived', self.modele), self.reponses)
+        finally:
+            os.chdir(dossier_initial)
+
     def test_notebook_execute_avec_figures_et_sans_erreurs(self):
-        notebook = json.loads((BASE_DIR / 'Projet_Classification_Intentions_Banking77.ipynb').read_text())
+        notebook = json.loads(NOTEBOOK_PATH.read_text())
         ids = [cellule['id'] for cellule in notebook['cells']]
         self.assertEqual(len(ids), len(set(ids)))
         cellules = [c for c in notebook['cells'] if c['cell_type'] == 'code']
@@ -108,7 +122,7 @@ class LivraisonTests(unittest.TestCase):
 
     def test_interface_question_vide_exemple_et_classification(self):
         from streamlit.testing.v1 import AppTest
-        app = AppTest.from_file(str(BASE_DIR / 'app.py')).run(timeout=30)
+        app = AppTest.from_file(str(BASE_DIR / 'app' / 'streamlit_app.py')).run(timeout=30)
         self.assertFalse(app.exception)
         next(b for b in app.button if b.label == 'Question classification').click().run(timeout=30)
         self.assertTrue(app.warning)

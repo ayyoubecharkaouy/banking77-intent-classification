@@ -3,4 +3,4 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-artifacts/sentence_bert/
+artifacts/models/sentence_bert/
