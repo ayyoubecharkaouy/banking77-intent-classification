@@ -1,0 +1,119 @@
+{
+  "date_utc": "2026-10-27T22:54:08.809424+00:00",
+  "random_state": 42,
+  "donnees": {
+    "train_initial": 10003,
+    "test_initial": 3080,
+    "lignes_invalides_train": 0,
+    "lignes_invalides_test": 0,
+    "recouvrements_train_test": 24,
+    "conflits_etiquettes_train": 2,
+    "doublons_internes_train": 27,
+    "train_final": 9950,
+    "test_final": 3080,
+    "classes": 77
+  },
+  "selection": {
+    "mode": "hybride",
+    "C": 0.5,
+    "moteur": "lsa"
+  },
+  "scores_test": {
+    "accuracy": 0.9084415584415585,
+    "precision_macro": 0.9111360672069938,
+    "rappel_macro": 0.9084415584415583,
+    "f1_macro": 0.9084389531698259
+  },
+  "dimension_embeddings": 256,
+  "nombre_reponses": 77,
+  "versions": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "streamlit": "1.66.1"
+  },
+  "comparaison_validation": [
+    {
+      "mode": "hybride",
+      "C": 0.5,
+      "accuracy": 0.9105527638190954,
+      "precision_macro": 0.9123559707256862,
+      "rappel_macro": 0.90861155214808,
+      "f1_macro": 0.9083171769086458
+    },
+    {
+      "mode": "tfidf",
+      "C": 0.5,
+      "accuracy": 0.9080402010050251,
+      "precision_macro": 0.9097672048792279,
+      "rappel_macro": 0.9061906072560966,
+      "f1_macro": 0.9056560508154838
+    },
+    {
+      "mode": "tfidf",
+      "C": 1.0,
+      "accuracy": 0.907537688442211,
+      "precision_macro": 0.9085452531127295,
+      "rappel_macro": 0.905346697413307,
+      "f1_macro": 0.9048921333378998
+    },
+    {
+      "mode": "hybride",
+      "C": 1.0,
+      "accuracy": 0.9065326633165829,
+      "precision_macro": 0.9081167183935508,
+      "rappel_macro": 0.9046995311121159,
+      "f1_macro": 0.9042658289685073
+    },
+    {
+      "mode": "hybride",
+      "C": 3.0,
+      "accuracy": 0.9045226130653267,
+      "precision_macro": 0.9054293119064275,
+      "rappel_macro": 0.9024102799276151,
+      "f1_macro": 0.9016725377859185
+    },
+    {
+      "mode": "tfidf",
+      "C": 3.0,
+      "accuracy": 0.9035175879396985,
+      "precision_macro": 0.9044871838632406,
+      "rappel_macro": 0.9008977967480921,
+      "f1_macro": 0.9004084228726711
+    },
+    {
+      "mode": "embeddings",
+      "C": 1.0,
+      "accuracy": 0.8874371859296483,
+      "precision_macro": 0.8925673191276762,
+      "rappel_macro": 0.8861649922398296,
+      "f1_macro": 0.8871682913332714
+    },
+    {
+      "mode": "embeddings",
+      "C": 0.5,
+      "accuracy": 0.8844221105527639,
+      "precision_macro": 0.8918455908539124,
+      "rappel_macro": 0.880227060715238,
+      "f1_macro": 0.8822344282653916
+    },
+    {
+      "mode": "embeddings",
+      "C": 3.0,
+      "accuracy": 0.8819095477386935,
+      "precision_macro": 0.8850823827969605,
+      "rappel_macro": 0.8804372056066009,
+      "f1_macro": 0.8808285301632306
+    }
+  ],
+  "sentencebert_execute": false,
+  "sha256": {
+    "banking77_train.csv": "127405dcf993ab665b239a69c285891286b6c5313897ceb8c27b5f49efb265d2",
+    "banking77_test.csv": "47102a476fb53636f11e2789142f039b6dfab4fa30dd8983452c09ead7f4535a",
+    "variantes.json": "48f65a007d5fe962d61f8aeeebdd9b6af3b4c1b56f32f5432265dfb73122a664",
+    "reponses.json": "32051474c2a8ee39ca7408b0603b77cf1ce0fd33056f0f9fce77a3c5deb848e5"
+  },
+  "variance_expliquee_lsa": 0.5239152908325195
+}
